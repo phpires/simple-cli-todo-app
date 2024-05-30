@@ -16,26 +16,6 @@ type Task struct {
 var taskListFileName string = "task-list"
 var inputTask string
 
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
-func createFileLine(task Task) string {
-	return fmt.Sprintf("%d,%s,%t\n", task.Order, task.Name, task.IsDone)
-}
-
-func write(f *os.File, task Task) {
-	line := createFileLine(task)
-	w := bufio.NewWriter(f)
-	bw, err := w.WriteString(line)
-	check(err)
-	fmt.Printf("wrote %d bytes.", bw)
-	w.Flush()
-
-}
-
 func main() {
 	flag.StringVar(&inputTask, "t", "Clean your room", "Add a task to complete.")
 	flag.Parse()
@@ -72,4 +52,24 @@ func getLinesQty(fileName string) int {
 	file.Close()
 	fmt.Printf("Number of lines: %d\n", lineCount)
 	return lineCount
+}
+
+func write(f *os.File, task Task) {
+	line := createFileLine(task)
+	w := bufio.NewWriter(f)
+	bw, err := w.WriteString(line)
+	check(err)
+	fmt.Printf("wrote %d bytes.", bw)
+	w.Flush()
+
+}
+
+func createFileLine(task Task) string {
+	return fmt.Sprintf("%d,%s,%t\n", task.Order, task.Name, task.IsDone)
+}
+
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
 }
